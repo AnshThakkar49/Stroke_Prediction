@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stroke Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        form { margin: 20px auto; width: 50%; padding: 20px; border: 1px solid #ccc; border-radius: 10px; }
+        input, select, button { margin: 10px; padding: 10px; width: 80%; }
+        .result { font-weight: bold; color: blue; }
+    </style>
+</head>
+<body>
+    <h2>Stroke Risk Prediction</h2>
+
+    <form action="/predict" method="post">
+        <select name="gender" id="gender" required>
+            <option selected>Gender</option>
+            <option value="0">Female</option>
+            <option value="1">Male</option>
+        </select>
+        <input type="number" name="age" placeholder="Age" required><br>
+        <select name="hypertension" id="hypertension" required>
+            <option selected>Hypertension</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select>
+        <select name="heart_disease" id="heart_disease" required>
+            <option selected>Heart Disease</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select>
+        <select name="ever_married" id="ever_married" required>
+            <option selected>Ever Married?</option>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select>
+        <select name="work_type" id="work_type" required>
+            <option selected>Work Type</option>
+            <option value="0">Govt. Job</option>
+            <option value="2">Private Job</option>
+            <option value="3">Self Employed</option>
+        </select>
+        <select name="Residence_type" id="Residence_type" required>
+            <option selected>Residence Type</option>
+            <option value="1">Urban</option>
+            <option value="0">Rural</option>
+        </select>
+        <input type="number" name="avg_glucose_level" placeholder="Avg Glucose Level" required>
+        <input type="number" id="height" name="height" placeholder="Height (cm)" required>
+        <input type="number" id="weight" name="weight" placeholder="Weight (kg)" required>
+        <input type="number" id="bmi" name="bmi" placeholder="BMI (Auto-calculated)" readonly required>
+        <select name="smoking_status" id="smoking_status" required>
+            <option selected>Smoking Status</option>
+            <option value="1">Use to Smoke</option>
+            <option value="2">Never Smoked</option>
+            <option value="3">Smokes</option>
+            <option value="4">Formerly smoked</option>
+            <option value="0">Unknown</option>
+        </select>
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction_text %}
+        <p class="result">{{ prediction_text }}</p>
+    {% endif %}
+
+    <script>
+        function calculateBMI() 
+        {
+            let height = document.getElementById("height").value;
+            let weight = document.getElementById("weight").value;
+            
+            if (height > 0 && weight > 0) 
+            {
+                let bmi = (weight / ((height / 100) ** 2)).toFixed(2);  // Convert height to meters and calculate BMI
+                document.getElementById("bmi").value = bmi;  // Update BMI field
+            } 
+            else 
+            {
+                document.getElementById("bmi").value = "";  // Clear if values are not valid
+            }
+        }
+        document.getElementById("height").addEventListener("input", calculateBMI);
+        document.getElementById("weight").addEventListener("input", calculateBMI);
+    </script>
+</body>
+</html>
